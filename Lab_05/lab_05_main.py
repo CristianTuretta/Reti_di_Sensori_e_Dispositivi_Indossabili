@@ -20,6 +20,7 @@ def scan(scan_duration=10.0):
 
     # Print the list of devices found and some of their details
     for device in devices:
+        # Comment this line if you want to see all the BLE devices around
         if 9 in device.scanData.keys() and device.scanData[9] == b'Thingy':
             print(f"    Device {device.addr} | RSSI={device.rssi} dB")
 
