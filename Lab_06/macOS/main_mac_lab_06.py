@@ -9,6 +9,9 @@ from utility.callbacks import *
 # Ignore the FutureWarning kind of warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
+def get_uuid(device):
+    return str(device.details[0].identifier).split(",")[1].split("= ")[1]
+
 def motion_characteristics(
         step_counter_interval=100,
         temperature_comp_interval=100,
@@ -30,7 +33,7 @@ async def scan():
     :return: A list of Thingy devices found
     """
     # Scan and save the list of devices
-    devices = await BleakScanner.discover()
+    devices = await BleakScanner.discover(cb=dict(use_bdaddr=True))
 
     # Get the current time
     scan_time = datetime.datetime.now()
@@ -54,7 +57,7 @@ async def connect_and_collect(device, sampling_frequency=60):
     :param sampling_frequency: The sampling frequency to set for the sensor, default is 60 Hz
     :return:
     """
-    async with BleakClient(device.address) as client:
+    async with BleakClient(get_uuid(device)) as client:
         # Ensure the client is connected
         if not await client.is_connected():
             print("Failed to connect to Thingy52")
@@ -80,6 +83,17 @@ async def connect_and_collect(device, sampling_frequency=60):
         await client.stop_notify(TMS_RAW_DATA_UUID)
 
 if __name__ == '__main__':
+    # MAC address of my Nordic Thingy52
+    my_thingy_mac_address = "EE:39:9A:D5:B5:D5"
+
     # Run the scan function
-    dev = asyncio.run(scan())
-    asyncio.run(connect_and_collect(dev[0]))
+    discovered_thingy = asyncio.run(scan())
+
+    # Retain only my device, None if my device has not being discovered
+    my_thingy_device = next((t for t in discovered_thingy if t.address.lower() == my_thingy_mac_address.lower()), None)
+
+    # Connect and gather the data
+    if my_thingy_device:
+        asyncio.run(connect_and_collect(my_thingy_device))
+    else:
+        print("Device not detected")

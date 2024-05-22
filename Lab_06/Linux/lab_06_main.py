@@ -81,6 +81,17 @@ def connect_and_collect(device, sampling_frequency=60):
 
 
 if __name__ == '__main__':
+    # MAC address of my Nordic Thingy52
+    my_thingy_mac_address = "EE:39:9A:D5:B5:D5"
+
     # Run the scan function
-    dev = scan()
-    connect_and_collect(dev[0])
+    discovered_thingy = scan()
+
+    # Retain only my device, None if my device has not being discovered
+    my_thingy_device = next((t for t in discovered_thingy if t.addr.lower() == my_thingy_mac_address.lower()), None)
+
+    # Connect and gather the data
+    if my_thingy_device:
+        connect_and_collect(my_thingy_device)
+    else:
+        print("Device not detected")
