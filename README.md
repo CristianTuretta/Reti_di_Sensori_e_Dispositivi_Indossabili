@@ -33,7 +33,7 @@ python utility/find_helper.py
 A questo punto si può eseguire il codice, ad esempio andando nella cartella `Lab_05/Linux/` ed eseguendo il file 
 `lab_05_main.py`.
 
-# MacOS
+# MacOS and Windows
 Per prima cosa installare le dipendenze necessarie per il corretto funzionamento del progetto.
 Per prima aprire il terminale ed attivare il virtualenv del progetto.
 ```bash
@@ -41,7 +41,7 @@ source <VENV-NAME>/bin/activate
 ```
 a questo punto installare le dipendenze del progetto:
 ```bash
-pip install -r requirements_macOS.txt
+pip install -r requirements_macOS_windows.txt
 ```
 
-Successivamente si può eseguire il codice, ad esempio andando nella cartella `Lab_05/MacOS/` ed eseguendo il file.
+Successivamente si può eseguire il codice, ad esempio andando nella cartella `Lab_05/MacOS_Windows/` ed eseguendo il file.
