@@ -19,8 +19,25 @@ def motion_characteristics(
         motion_processing_unit_freq=60,
         wake_on_motion=1
 ):
+    """
 
-    return struct.pack("<4H B",
+    :param step_counter_interval:
+    :param temperature_comp_interval:
+    :param magnetometer_comp_interval:
+    :param motion_processing_unit_freq:
+    :param wake_on_motion:
+    :return:
+    """
+
+    """
+    The format string '<4H B' specifies the following:
+        <  : Little-endian byte order.
+        4H : Four 16-bit unsigned integers.
+        B  : One 8-bit unsigned integer.
+    """
+    format_str = "<4H B"
+
+    return struct.pack(format_str,
                        step_counter_interval,
                        temperature_comp_interval,
                        magnetometer_comp_interval,
@@ -40,14 +57,10 @@ async def scan():
     print(f"Scan: {scan_time}")
 
     # Print the list of devices found and some of their details
-    thingy_devices = []
     for device in devices:
-        # Comment this line if you want to see all the BLE devices around
-        if device.name == 'Thingy':
-            print(f"    Device {device.address} | RSSI={device.rssi} dB")
-            thingy_devices.append(device)
+        print(f"    Device {device.address} | RSSI={device.rssi} dB")
 
-    return thingy_devices
+    return devices
 
 
 async def connect_and_collect(device, sampling_frequency=60):
