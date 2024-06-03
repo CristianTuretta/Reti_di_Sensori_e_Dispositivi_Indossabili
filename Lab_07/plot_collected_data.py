@@ -38,7 +38,6 @@ if __name__ == '__main__':
     fig.suptitle("Accelerometer and Gyroscope Data", fontsize=18, fontweight="bold")
     plt.tight_layout()
     plt.subplots_adjust(hspace=0.5, top=0.88)
-    # plt.subplots_adjust(top=0.88)
 
     plt.savefig("collected_data_overview.png", dpi=300)
     plt.show()

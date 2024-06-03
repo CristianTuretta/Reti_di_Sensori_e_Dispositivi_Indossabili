@@ -7,7 +7,7 @@ https://nordicsemiconductor.github.io/Nordic-Thingy52-FW/documentation/firmware_
 
 def raw_data_callback(sender, data):
     # Handle the incoming accelerometer data here
-    receive_time = datetime.now()
+    receive_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
 
     # Accelerometer
     acc_x = (struct.unpack('h', data[0:2])[0] * 1.0) / 2 ** 10

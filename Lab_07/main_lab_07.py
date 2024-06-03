@@ -1,6 +1,3 @@
-import asyncio
-import struct
-import datetime
 import warnings
 from bleak import *
 from utility.UUIDS import *
@@ -53,7 +50,7 @@ async def scan():
     devices = await BleakScanner.discover(cb=dict(use_bdaddr=True))
 
     # Get the current time
-    scan_time = datetime.datetime.now()
+    scan_time = datetime.now()
     print(f"Scan: {scan_time}")
 
     # Print the list of devices found and some of their details
