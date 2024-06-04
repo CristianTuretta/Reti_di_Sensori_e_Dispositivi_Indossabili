@@ -1,3 +1,9 @@
+import multiprocessing
+import sys
+
+sys.path.append('../')
+
+from live_plot import start_live_plotting
 import warnings
 from bleak import *
 from utility.UUIDS import *
@@ -104,6 +110,7 @@ if __name__ == '__main__':
 
     # Connect and gather the data
     if my_thingy_device:
+        multiprocessing.Process(None, start_live_plotting).start()
         asyncio.run(connect_and_collect(my_thingy_device))
     else:
         print("Device not detected")
