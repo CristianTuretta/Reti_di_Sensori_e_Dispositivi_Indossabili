@@ -100,7 +100,7 @@ async def connect_and_collect(device, sampling_frequency=60):
 
 if __name__ == '__main__':
     # MAC address of my Nordic Thingy52
-    my_thingy_mac_address = "EE:39:9A:D5:B5:D5"
+    my_thingy_mac_address = "E7:2F:13:17:C0:C4"
 
     # Run the scan function
     discovered_thingy = asyncio.run(scan())
@@ -110,6 +110,7 @@ if __name__ == '__main__':
 
     # Connect and gather the data
     if my_thingy_device:
+        # Start the live plotting in a separate process
         multiprocessing.Process(None, start_live_plotting).start()
         asyncio.run(connect_and_collect(my_thingy_device))
     else:
