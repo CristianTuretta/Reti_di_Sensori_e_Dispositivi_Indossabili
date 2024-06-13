@@ -67,8 +67,47 @@ async def connect_to_device(device):
         print(f"Failed to connect to {device.address}")
         return None, None
 
-async def record_from_client(client, device_address):
+def motion_characteristics(
+        step_counter_interval=100,
+        temperature_comp_interval=100,
+        magnetometer_comp_interval=100,
+        motion_processing_unit_freq=60,
+        wake_on_motion=1
+):
+    """
+
+    :param step_counter_interval:
+    :param temperature_comp_interval:
+    :param magnetometer_comp_interval:
+    :param motion_processing_unit_freq:
+    :param wake_on_motion:
+    :return:
+    """
+
+    """
+    The format string '<4H B' specifies the following:
+        <  : Little-endian byte order.
+        4H : Four 16-bit unsigned integers.
+        B  : One 8-bit unsigned integer.
+    """
+    format_str = "<4H B"
+
+    return struct.pack(format_str,
+                       step_counter_interval,
+                       temperature_comp_interval,
+                       magnetometer_comp_interval,
+                       motion_processing_unit_freq,
+                       wake_on_motion)
+
+async def record_from_client(client, device_address, sampling_frequency=60):
+    # Set the sampling frequency / C4
+    payload = motion_characteristics(motion_processing_unit_freq=sampling_frequency)
+    await client.write_gatt_char(TMS_CONF_UUID, payload)
+
+    # Ask to activate the raw data (Inertial data)  / C5
     await client.start_notify(TMS_RAW_DATA_UUID, partial(raw_data_callback_with_info, device_address))
+
+    # Change the LED color to red, recording status
     await change_status(client, "recording")
 
 async def recording(clients):
