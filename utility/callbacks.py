@@ -45,7 +45,7 @@ def raw_data_callback_with_info(device_address, sender, data):
     gyro_z = (struct.unpack('h', data[10:12])[0] * 1.0) / 2 ** 5
 
     # Save the data to a file
-    with open(f"sensor_data_{device_address}.csv", "a+") as file:
+    with open(f"sensor_data_{device_address.replace(':', '-')}.csv", "a+") as file:
         file.write(f"{receive_time},{acc_x},{acc_y},{acc_z},{gyro_x},{gyro_y},{gyro_z}\n")
 
     print(f"\r{receive_time} - Accelerometer: X={acc_x: 2.3f}, Y={acc_y: 2.3f}, Z={acc_z: 2.3f}", end="", flush=True)
